@@ -207,6 +207,9 @@ namespace dotSwitcher.UI
         {
             if (currentHotkeyType != HotKeyType.None)
             {
+                if (e.Type == KeyboardEventType.KeyUp)
+                    return;
+
                 var vk = e.KeyCode;
                 if (vk == Keys.Escape || vk == Keys.Back)
                 {
@@ -220,9 +223,9 @@ namespace dotSwitcher.UI
                     && vk != Keys.LControlKey && vk != Keys.RControlKey)
                 {
                     e.Handled = true;
+                    SetCurrentHotkeyInputText(e.ToString());
+                    currentHotkey = e;
                 }
-                SetCurrentHotkeyInputText(e.ToString());
-                currentHotkey = e;
             }
         }
         // TODO: refactor this (make HotkeyInput : TextBox)

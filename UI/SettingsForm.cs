@@ -316,6 +316,17 @@ namespace dotSwitcher.UI
         {
             settings.Reload();
         }
+        void buttonResetSettings_Click(object sender, EventArgs e)
+        {
+            settings.SwitchHotkey = new KeyboardEventArgs(Keys.Pause, false);
+            settings.ConvertSelectionHotkey = new KeyboardEventArgs(Keys.Pause | Keys.Shift, false);
+            settings.SwitchLayoutHotkey = new KeyboardEventArgs(Keys.None, false);
+            settings.AutoStart = false;
+            settings.ShowTrayIcon = true;
+            settings.SmartSelection = true;
+            settings.SwitchDelay = 20;
+            UpdateUi();
+        }
 
         /**
          * OTHER INPUTS

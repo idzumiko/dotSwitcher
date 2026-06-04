@@ -159,6 +159,8 @@ namespace dotSwitcher.Switcher
             if (evtData.Equals(settings.ConvertSelectionHotkey))
             {
                 ConvertSelection();
+                evtData.Handled = true;
+                return;
             }
 
             if (this.HaveTrackingKeys(evtData))
@@ -206,6 +208,7 @@ namespace dotSwitcher.Switcher
         {
             LowLevelAdapter.BackupClipboard();
             LowLevelAdapter.SendCopy();
+            Thread.Sleep(settings.SwitchDelay);
             var selection = Clipboard.GetText();
             LowLevelAdapter.RestoreClipboard();
             if (String.IsNullOrEmpty(selection))
@@ -213,25 +216,25 @@ namespace dotSwitcher.Switcher
                 return;
             }
 
-            
             LowLevelAdapter.ReleasePressedFnKeys();
 
             var keys = new List<Keys>(selection.Length);
-            for(var i = 0; i < selection.Length; i++)
+            for (var i = 0; i < selection.Length; i++)
             {
                 keys.Add(LowLevelAdapter.ToKey(selection[i]));
             }
+
+            LowLevelAdapter.SendKeyPress(Keys.Delete, false);
             LowLevelAdapter.SetNextKeyboardLayout();
+            Thread.Sleep(settings.SwitchDelay);
 
             foreach (var key in keys)
             {
-                Debug.Write(key);
                 if (key != Keys.None)
                 {
                     LowLevelAdapter.SendKeyPress(key, (key & Keys.Shift) != Keys.None);
                 }
             }
-
         }
         private void SwitchLayout()
         {

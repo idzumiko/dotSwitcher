@@ -206,6 +206,9 @@ namespace dotSwitcher.Switcher
 
         private void ConvertSelection()
         {
+            var sourceLayout = LowLevelAdapter.GetCurrentLayout();
+
+            LowLevelAdapter.ReleasePressedFnKeys();
             LowLevelAdapter.BackupClipboard();
             LowLevelAdapter.SendCopy();
             Thread.Sleep(settings.SwitchDelay);
@@ -216,12 +219,10 @@ namespace dotSwitcher.Switcher
                 return;
             }
 
-            LowLevelAdapter.ReleasePressedFnKeys();
-
             var keys = new List<Keys>(selection.Length);
             for (var i = 0; i < selection.Length; i++)
             {
-                keys.Add(LowLevelAdapter.ToKey(selection[i]));
+                keys.Add(LowLevelAdapter.ToKey(selection[i], sourceLayout));
             }
 
             LowLevelAdapter.SendKeyPress(Keys.Delete, false);

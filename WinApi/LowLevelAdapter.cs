@@ -222,8 +222,11 @@ namespace dotSwitcher.WinApi
 
         public static Keys ToKey(char ch)
         {
-            var layout = GetCurrentLayout();
+            return ToKey(ch, GetCurrentLayout());
+        }
 
+        public static Keys ToKey(char ch, IntPtr layout)
+        {
             short keyNumber = VkKeyScanEx(ch, layout);
             if (keyNumber == -1)
             {
